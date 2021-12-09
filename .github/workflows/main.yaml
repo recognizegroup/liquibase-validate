@@ -1,0 +1,30 @@
+name: main
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Gradle clean
+        run: |
+          ./gradlew clean
+      - name: Gradle build
+        run: |
+          ./gradlew build
+      - name: Gradle publish to mavenLocal
+        run: |
+          ./gradlew publishToMavenLocal
+      - name: Upload build report
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: build_reports
+          path: build/reports
