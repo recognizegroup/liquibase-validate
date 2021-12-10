@@ -12,7 +12,7 @@ class LiquibaseValidatePlugin: Plugin<Project> {
         target.getTasksByName("diffChangeLog", true).forEach {
             it.apply {
                 doFirst {
-                    val changeLogFile = File("${target.rootDir}/src/main/resources/db/changelog/changes.yaml")
+                    val changeLogFile = File("${project.projectDir}/src/main/resources/db/changelog/changes.yaml")
                     if (changeLogFile.delete()) {
                         println("Deleted existing changes.yaml")
                     }
@@ -25,7 +25,7 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                             }
                         )
 
-                        val changeLogFile = File("${target.rootDir}/src/main/resources/db/changelog/changes.yaml")
+                        val changeLogFile = File("${project.projectDir}/src/main/resources/db/changelog/changes.yaml")
                         val changeLogData = changeLogFile.inputStream().use {
                             yaml.load<Map<String, MutableList<Map<String, Map<String, List<Map<String, Any>>>>>>>(it)
                         }
@@ -62,14 +62,14 @@ class LiquibaseValidatePlugin: Plugin<Project> {
             }
             target.tasks.register("validateDiffChangeLogEmpty") { task ->
                 task.dependsOn("diffChangeLog")
-                task.doLast {
+                task.doLast { doLastTask ->
                     val yaml = Yaml(
                         DumperOptions().apply {
                             defaultFlowStyle = DumperOptions.FlowStyle.BLOCK
                         }
                     )
 
-                    val changeLogFile = File("${target.rootDir}/src/main/resources/db/changelog/changes.yaml")
+                    val changeLogFile = File("${task.project.projectDir}/src/main/resources/db/changelog/changes.yaml")
                     val changeLogData = changeLogFile.inputStream().use {
                         yaml.load<Map<String, MutableList<Map<String, Map<String, List<Map<String, Any>>>>>>>(it)
                     }
@@ -77,9 +77,9 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                     if (!changeLogData["databaseChangeLog"].isNullOrEmpty()) {
                         println("Changelog was invalid or not empty, changelog content:")
                         changeLogFile.forEachLine {
-                            println(">  $it")
+                            println(">  $doLastTask")
                         }
-                        throw TaskExecutionException(it, Exception("Changelog was invalid or not empty"))
+                        throw TaskExecutionException(doLastTask, Exception("Changelog was invalid or not empty"))
                     }
                 }
             }
