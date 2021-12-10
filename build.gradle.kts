@@ -4,6 +4,7 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     kotlin("jvm") version "1.6.0"
+    id("com.zoltu.git-versioning") version "3.0.3"
 }
 
 repositories {
@@ -38,14 +39,11 @@ tasks {
     }
 }
 
-object Artifact {
-    const val groupId = "nl.recognize.liquibase.validate"
-    const val artifactId = "gradle"
-    const val version = "1.0.0"
-}
+val versionInfo = ZoltuGitVersioning.versionInfo
+val artifactId = "gradle"
 
-group = Artifact.groupId
-version = Artifact.version
+group = "nl.recognize.liquibase.validate"
+version = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}"
 
 gradlePlugin {
     plugins {
@@ -65,25 +63,37 @@ pluginBundle {
     (plugins) {
         "liquibase-validate" {
             displayName = "Gradle Liquibase validate plugin"
-            version = Artifact.version
+            version = project.version.toString()
         }
     }
 
     mavenCoordinates {
-        groupId = Artifact.groupId
-        artifactId = Artifact.artifactId
-        version = Artifact.version
+        groupId = project.group.toString()
+        artifactId = "gradle"
+        version = project.version.toString()
     }
 }
 
 publishing {
     publishing {
         repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/juulhobert/liquibase-validate")
+                credentials {
+                    username = System.getenv("GITHUB_ACTOR")
+                    password = System.getenv("GITHUB_TOKEN")
+                }
+            }
             mavenLocal()
         }
-
-        publications.create("pluginMaven", MavenPublication::class) {
-            artifactId = Artifact.artifactId
+        publications {
+            create("pluginMaven", MavenPublication::class) {
+                artifactId = "gradle"
+            }
+            create<MavenPublication>("default") {
+                from(components["java"])
+            }
         }
     }
 }

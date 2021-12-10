@@ -82,5 +82,8 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                 }
             }
         }
+        target.tasks.named("check") {
+            it.dependsOn.add("validateDiffChangeLogEmpty")
+        }
     }
 }

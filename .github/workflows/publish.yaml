@@ -1,12 +1,16 @@
 name: Publish
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup JDK
         uses: actions/setup-java@v2
         with:
@@ -22,9 +26,11 @@ jobs:
       - name: Gradle build
         run: |
           ./gradlew build
-      - name: Gradle publish to mavenLocal
+      - name: Gradle publish
+        env:
+          GITHUB_TOKEN: ${{ github.token  }}
         run: |
-          ./gradlew publishToMavenLocal
+          ./gradlew publish
       - name: publish
         run: |
           PUBLISH_PRODUCTION=1 ./gradlew publishPlugins
