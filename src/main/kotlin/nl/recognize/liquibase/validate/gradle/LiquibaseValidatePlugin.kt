@@ -77,7 +77,7 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                     if (!changeLogData["databaseChangeLog"].isNullOrEmpty()) {
                         println("Changelog was invalid or not empty, changelog content:")
                         changeLogFile.forEachLine {
-                            println(">  $doLastTask")
+                            println(">  $it")
                         }
                         throw TaskExecutionException(doLastTask, Exception("Changelog was invalid or not empty"))
                     }
