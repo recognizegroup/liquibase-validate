@@ -42,21 +42,21 @@ tasks {
 val versionInfo = ZoltuGitVersioning.versionInfo
 val artifactId = "gradle"
 
-group = "nl.recognize.liquibase.validate"
+group = "nl.recognizegroup.liquibase.validate"
 version = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}"
 
 gradlePlugin {
     plugins {
         register("liquibase-validate") {
-            id = "nl.recognize.liquibase.validate.gradle"
-            implementationClass = "nl.recognize.liquibase.validate.gradle.LiquibaseValidatePlugin"
+            id = "nl.recognizegroup.liquibase.validate.gradle"
+            implementationClass = "nl.recognizegroup.liquibase.validate.gradle.LiquibaseValidatePlugin"
         }
     }
 }
 
 pluginBundle {
-    website = "https://github.com/juulhobert/liquibase-validate"
-    vcsUrl = "https://github.com/juulhobert/liquibase-validate.git"
+    website = "https://github.com/recognizegroup/liquibase-validate"
+    vcsUrl = "https://github.com/recognizegroup/liquibase-validate.git"
     description = "A plugin for checking Liquibase changes"
     tags = listOf("liquibase", "validation", "check")
 
@@ -79,7 +79,7 @@ publishing {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/juulhobert/liquibase-validate")
+                url = uri("https://maven.pkg.github.com/recognizegroup/liquibase-validate")
                 credentials {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
