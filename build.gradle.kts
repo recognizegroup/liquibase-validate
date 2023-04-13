@@ -42,14 +42,14 @@ tasks {
 val versionInfo = ZoltuGitVersioning.versionInfo
 val artifactId = "gradle"
 
-group = "nl.recognizegroup.liquibase.validate"
+group = "nl.recognize.liquibase.validate"
 version = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}"
 
 gradlePlugin {
     plugins {
         register("liquibase-validate") {
-            id = "nl.recognizegroup.liquibase.validate.gradle"
-            implementationClass = "nl.recognizegroup.liquibase.validate.gradle.LiquibaseValidatePlugin"
+            id = "nl.recognize.liquibase.validate.gradle"
+            implementationClass = "nl.recognize.liquibase.validate.gradle.LiquibaseValidatePlugin"
         }
     }
 }

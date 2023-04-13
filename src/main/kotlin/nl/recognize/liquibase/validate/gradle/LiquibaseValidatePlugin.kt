@@ -1,4 +1,4 @@
-package nl.recognizegroup.liquibase.validate.gradle
+package nl.recognize.liquibase.validate.gradle
 
 import java.io.File
 import org.gradle.api.Plugin
