@@ -12,7 +12,7 @@ Apply this plugin to the project.
 This plugin is not registered to Maven Central.
 [Read the Gradle Plugin Portal to setup plugin.](https://plugins.gradle.org/plugin/nl.recognize.liquibase.validate.gradle)
 
-After installation the task `validateDiffChangeLogEmpty` is available and it automatically adds a doLast to the `diffChangeLog` which sanitizes the changes.yaml
+After installation the task `validateDiffChangelogEmpty` is available and it automatically adds a doLast to the `diffChangelog` which sanitizes the changes.yaml
 
 ## License
 
