@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml
 
 class LiquibaseValidatePlugin: Plugin<Project> {
     override fun apply(target: Project) {
-        target.getTasksByName("diffChangeLog", true).forEach {
+        target.getTasksByName("diffChangelog", true).forEach {
             it.apply {
                 doFirst {
                     val changeLogFile = File("${project.projectDir}/src/main/resources/db/changelog/changes.yaml")
@@ -56,12 +56,12 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                             }
                         }
                     } catch (e: Throwable) {
-                        logger.error("cleanupChangeLog failed", e)
+                        logger.error("cleanupChangelog failed", e)
                     }
                 }
             }
-            target.tasks.register("validateDiffChangeLogEmpty") { task ->
-                task.dependsOn("diffChangeLog")
+            target.tasks.register("validateDiffChangelogEmpty") { task ->
+                task.dependsOn("diffChangelog")
                 task.doLast { doLastTask ->
                     val yaml = Yaml(
                         DumperOptions().apply {
@@ -84,7 +84,7 @@ class LiquibaseValidatePlugin: Plugin<Project> {
                 }
             }
             target.tasks.named("check") { task ->
-                task.dependsOn.add("validateDiffChangeLogEmpty")
+                task.dependsOn.add("validateDiffChangelogEmpty")
             }
         }
     }
